@@ -35,7 +35,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers & OS deps
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
 
       # If you committed .env.example, copy it; otherwise set env vars as needed
       # - name: Prepare .env
