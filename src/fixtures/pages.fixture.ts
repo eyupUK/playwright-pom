@@ -14,26 +14,26 @@ type Pages = {
 
 export const test = base.extend<Pages>({
   // 1) Create a context that reuses the saved auth state
-  context: async ({ browser }, use) => {
-    const context = await browser.newContext({
-      storageState: 'storage/authState.json',
-    });
-    try {
-      await use(context);
-    } finally {
-      await context.close();
-    }
-  },
+  // context: async ({ browser }, use) => {
+  //   const context = await browser.newContext({
+  //     storageState: 'storage/authState.json',
+  //   });
+  //   try {
+  //     await use(context);
+  //   } finally {
+  //     await context.close();
+  //   }
+  // },
 
-  // 2) Create a page from that context
-  page: async ({ context }, use) => {
-    const page = await context.newPage();
-    try {
-      await use(page);
-    } finally {
-      await page.close();
-    }
-  },
+  // // 2) Create a page from that context
+  // page: async ({ context }, use) => {
+  //   const page = await context.newPage();
+  //   try {
+  //     await use(page);
+  //   } finally {
+  //     await page.close();
+  //   }
+  // },
 
   // 3) POM fixtures
   loginPage: async ({ page }, use) => {

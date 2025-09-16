@@ -25,7 +25,7 @@ export default defineConfig({
     // 2) Actual test projects reuse storage state
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome']},
+      use: { ...devices['Desktop Chrome'], storageState: 'storage/authState.json' },
       dependencies: ['setup']
     },
     // {
