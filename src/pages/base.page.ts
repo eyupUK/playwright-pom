@@ -4,10 +4,6 @@ export abstract class BasePage {
   protected readonly page: Page;
   constructor(page: Page) { this.page = page; }
 
-  getByTestId(id: string): Locator {
-    return this.page.getByTestId(id);
-  }
-
   async goto(path: string) {
     await this.page.goto(path, { waitUntil: 'domcontentloaded' });
     await this.waitForNetworkIdle();

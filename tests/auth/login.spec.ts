@@ -5,9 +5,7 @@ const env = loadEnv();
 
 test.describe('Authentication', () => {
   test('valid user can log in and see Home', async ({ loginPage, homePage }) => {
-    await loginPage.open();
-    await loginPage.login(env.USER_EMAIL ?? 'user@example.com', env.USER_PASSWORD ?? 'password123');
-    await homePage.expectVisible(homePage.heading);
+    await homePage.goto('/inventory.html');
     await expect(homePage.heading).toContainText("Products");
     await homePage.expectUrlContains('/inventory.html');
   });
@@ -15,6 +13,6 @@ test.describe('Authentication', () => {
   test('invalid credentials show an error', async ({ loginPage }) => {
     await loginPage.open();
     await loginPage.login('wrong@user.com', 'badpass');
-    await loginPage.expectLoginError(/invalid|incorrect/i);
+    await loginPage.expectLoginError("Epic sadface: Username and password do not match any user in this service");
   });
 });

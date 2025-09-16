@@ -1,0 +1,80 @@
+name: Playwright CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+# Cancel previous runs on the same branch/PR to save minutes
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: E2E (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers & OS deps
+        run: npx playwright install --with-deps
+
+      # If you committed .env.example, copy it; otherwise set env vars as needed
+      # - name: Prepare .env
+      #   run: cp .env.example .env
+
+      # Generate auth state once; your playwright.config.ts has a 'setup' project
+      - name: Auth setup (generate storage/authState.json)
+        run: npm run auth:refresh
+        # Equivalent: npx playwright test --project=setup
+
+      - name: Run tests (${{ matrix.browser }})
+        run: npx playwright test --project=${{ matrix.browser }}
+
+      # Always upload raw test results (videos, traces, screenshots)
+      - name: Upload test-results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.browser }}
+          path: test-results/**
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # Upload HTML report (your config writes to 'report')
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report-${{ matrix.browser }}
+          path: report/**
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # Optional: keep the generated storage state for debugging
+      - name: Upload storage state
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-state-${{ matrix.browser }}
+          path: storage/authState.json
+          if-no-files-found: ignore
+          retention-days: 7

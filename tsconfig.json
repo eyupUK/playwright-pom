@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "CommonJS",
+    "module": "Node16",
     "lib": ["ES2022", "DOM"],
-    "moduleResolution": "Node",
-    "types": ["node", "@playwright/test"],
+    "moduleResolution": "node16",
+    "types": ["node", "@playwright/test", "playwright"],
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
