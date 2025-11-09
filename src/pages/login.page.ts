@@ -3,6 +3,10 @@ import { expect } from '@playwright/test';
 
 export class LoginPage extends BasePage {
 
+  constructor(page: Page) {
+    super(page);
+  }
+
   private Elements = {
     emailInput: this.page.locator('input[data-test="username"]'),
     passwordInput: this.page.locator('input[data-test="password"]'),
