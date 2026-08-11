@@ -21,6 +21,7 @@ cp .env.example .env   # or create .env
 npm test
 npm run test:headed
 npm run test:ui
+```
 
 ```
 playwright-pom/
